@@ -1,4 +1,4 @@
-﻿using EMS1.Data;
+﻿using EMS1.Data.Interface;
 using EMS1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,46 +9,41 @@ namespace EMS1.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public CountriesController(AppDbContext context)
+        private readonly ICountry _country;
+
+        public CountriesController(ICountry country)
         {
-            this._context = context;
+            _country = country;
         }
         [HttpGet]
-        public IActionResult GetCountries()
+        public IActionResult GetAllCountries()
         {
-            return Ok(_context.Countries.ToList());
-        }
-        [HttpPost]
-        public IActionResult AddCountry(Country country)
-        {
-            _context.Countries.Add(country);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
+            return Ok(_country.GetAllCountries());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCountry(int id)
+        public IActionResult GetCountry(int id) 
         {
-           return Ok(_context.Countries.Find(id));
+            return Ok(_country.GetCountry(id));
         }
 
-        [HttpPut]
-        public IActionResult UpdateCountry(Country country)
-        {
-            _context.Countries.Update(country);
-            _context.SaveChanges();
-            return Ok("Country Update Successfully!");
+
+        [HttpPost]
+        public IActionResult AddCountry(Country country)
+        { 
+            return Ok(_country.AddCountry(country));
         }
 
-        [HttpDelete]
+        [HttpPut("{id}")]
+        public IActionResult UpdateCountry(int id,Country country) 
+        { 
+            return Ok(_country.UpdateCountry(id,country));
+        }
+
+        [HttpDelete("{id}")]
         public IActionResult DeleteCountry(int id)
-        {
-            var country = _context.Countries.Find(id);
-            _context.Countries.Remove(country);
-            _context.SaveChanges();
-            return Ok("Country Deleted Successfully!");
+        { 
+            return Ok(_country.DeleteCountry(id));
         }
-
     }
 }

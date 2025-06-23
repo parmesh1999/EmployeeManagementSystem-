@@ -1,4 +1,4 @@
-﻿using EMS1.Data;
+﻿using EMS1.Data.Interface;
 using EMS1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,43 +9,38 @@ namespace EMS1.Controllers
     [ApiController]
     public class StatesController : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public StatesController(AppDbContext _context) 
+        private readonly IState _state;
+        public StatesController(IState state) 
         {
-            this._context = _context; 
+            this._state = state;
         }
 
+
         [HttpGet]
-        public IActionResult GetAllState()
+        public IActionResult GetAllStates()
         {
-            return Ok(_context.States.ToList());
+            return Ok(_state.GetAllStates());
         }
 
         [HttpPost]
         public IActionResult AddState(State state)
         {
-            _context.States.Add(state);
-            _context.SaveChanges();
-            return Ok("State Added successfully");               
-
+            return Ok(_state.AddState(state));
         }
 
         [HttpPut]
         public IActionResult UpdateState(State state)
         {
-            _context.States.Update(state);
-            _context.SaveChanges();
-            return Ok("State Updated Successfully!");
+            return Ok(_state.UpdateState(state));
         }
 
         [HttpDelete]
         public IActionResult DeleteState(int id)
         {
-            var state = _context.States.Find(id);
-            _context.States.Remove(state);
-            _context.SaveChanges();
-            return Ok("State Deleted Successfullty!");
+            return Ok(_state.DeleteState(id));
         }
+
+
+
     }
 }

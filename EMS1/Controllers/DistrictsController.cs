@@ -1,4 +1,4 @@
-﻿using EMS1.Data;
+﻿using EMS1.Data.Interface;
 using EMS1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,43 +9,35 @@ namespace EMS1.Controllers
     [ApiController]
     public class DistrictsController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public DistrictsController(AppDbContext _context)
-        {
-            this._context = _context;
+        private readonly IDistrict _district;
+        public DistrictsController(IDistrict district)
+        { 
+            this._district = district;
         }
 
-        [HttpGet]
-        public IActionResult GetDistricts()
-        {
-            return Ok(_context.Districts.ToList());
 
+        [HttpGet]
+        public IActionResult GetAllDistricts()
+        {
+            return Ok(_district.GetAllDistricts());
         }
 
         [HttpPost]
         public IActionResult AddDistrict(District district)
-        {
-            _context.Districts.Add(district);
-            _context.SaveChanges();
-            return Ok("District Added Successfully!"+district);
+        { 
+            return Ok(_district.AddDistrict(district));
         }
 
         [HttpPut]
         public IActionResult UpdateDistrict(District district)
         {
-            _context.Districts.Update(district);
-            _context.SaveChanges();
-            return Ok("District updated Successfully!");
+            return Ok(_district.UpdateDistrict(district));
         }
 
         [HttpDelete]
         public IActionResult DeleteDistrict(int id)
         {
-            var district = _context.Districts.Find(id);
-            _context.Districts.Remove(district);
-            _context.SaveChanges();
-            return Ok("District Deleted successfully!");
+            return Ok(_district.DeleteDistrict(id));
         }
-
     }
 }
