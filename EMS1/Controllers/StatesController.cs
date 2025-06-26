@@ -22,25 +22,28 @@ namespace EMS1.Controllers
             return Ok(_state.GetAllStates());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetStates(int id) 
+        { 
+            return Ok(_state.GetState(id));
+        }
+
         [HttpPost]
         public IActionResult AddState(State state)
         {
             return Ok(_state.AddState(state));
         }
 
-        [HttpPut]
-        public IActionResult UpdateState(State state)
+        [HttpPut("{id}")]
+        public IActionResult UpdateState(int id,State state)
         {
-            return Ok(_state.UpdateState(state));
+            return Ok(_state.UpdateState(id, state));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteState(int id)
         {
             return Ok(_state.DeleteState(id));
         }
-
-
-
     }
 }

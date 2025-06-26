@@ -22,19 +22,25 @@ namespace EMS1.Controllers
             return Ok(_district.GetAllDistricts());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetDistrict(int id)
+        {
+            return Ok(_district.GetDistrict(id));
+        }
+
         [HttpPost]
         public IActionResult AddDistrict(District district)
         { 
             return Ok(_district.AddDistrict(district));
         }
 
-        [HttpPut]
-        public IActionResult UpdateDistrict(District district)
+        [HttpPut("{id}")]
+        public IActionResult UpdateDistrict(int id, District district)
         {
-            return Ok(_district.UpdateDistrict(district));
+            return Ok(_district.UpdateDistrict(id, district));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteDistrict(int id)
         {
             return Ok(_district.DeleteDistrict(id));

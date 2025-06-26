@@ -23,7 +23,7 @@ namespace EMS1.Data.Repository
             return "District Added Successfully";
         }
 
-        public string UpdateDistrict(District district)
+        public string UpdateDistrict(int id, District district)
         {
             _context.Districts.Update(district);
             _context.SaveChanges();
@@ -41,6 +41,10 @@ namespace EMS1.Data.Repository
             }
             return "District not found!";
         }
-       
+
+        public District GetDistrict(int id)
+        {
+            return _context.Districts.Find(id);
+        }
     }
 }

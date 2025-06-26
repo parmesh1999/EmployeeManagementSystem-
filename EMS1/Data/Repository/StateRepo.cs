@@ -24,7 +24,7 @@ namespace EMS1.Data.Repository
             return "State Added Successfully!";
         }
 
-        public string UpdateState(State state)
+        public string UpdateState(int id, State state)
         {
             _context.States.Update(state);
             _context.SaveChanges();
@@ -43,5 +43,9 @@ namespace EMS1.Data.Repository
             return "State Not Found!";
         }
 
+        public State GetState(int id)
+        {
+            return _context.States.Find(id);
+        }
     }
 }
